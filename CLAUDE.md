@@ -47,7 +47,8 @@ npm run package   # vsix の作成（vsce package --skip-license）
 ## 注意事項
 - **GitHub Releases を作るリポジトリです。** `v` で始まるタグを push すると、`.github/workflows/release.yml` が、タグと `package.json` のバージョンの一致確認、テストの実行、vsix の作成、Releases への添付を行います。バージョンが一致しないと、リリースは失敗します。
 - 拡張機能ID（`7QgvhP.word-highlighter`）を変えると、保存データが消えます。`publisher` と `name` は変更しないでください。
-- 表示名（`displayName`）は、仕様書の「単語ハイライト」ではなく、他の拡張機能にそろえて英語の `word-highlighter` にしています（アクティビティバーの名前、コマンドの分類、通知の接頭辞も同じ）。画面の文言は日本語です。
+- 表示名（`displayName`）は、他の拡張機能にそろえて英語の `word-highlighter` にしています（アクティビティバーの名前、コマンドの分類、通知の接頭辞も同じ）。画面の文言は日本語です。
+- 仕様書（`docs/SPEC.md`）は、実装に合わせて書いています。挙動を変えたときは、仕様書も同じコミットで更新してください。
 - `engines.vscode` より新しい `@types/vscode` を使うと、vsce がエラーにします。`@types/vscode` は版を固定しています。
 - `.vscodeignore` で、`CLAUDE.md`、`docs/**`、`.github/**`、`src/**`、`test/**`、`samples/**` などの配布物に不要なファイルを除外しています。
 - `CHANGELOG.md` の箇条書きは `*` で、文体は「です・ます」です。
