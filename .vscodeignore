@@ -1,0 +1,23 @@
+# 開発用の設定・ソース類（配布物には不要）
+.github/**
+.vscode/**
+.vscode-test/**
+.claude/**
+src/**
+test/**
+dist-test/**
+docs/**
+samples/**
+node_modules/**
+.gitignore
+.gitattributes
+tsconfig.json
+eslint.config.mjs
+**/*.ts
+**/*.map
+
+# パッケージ化の成果物自体
+*.vsix
+
+# Claude Code 用のリポジトリ情報（配布物には不要）
+CLAUDE.md

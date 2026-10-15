@@ -1,0 +1,126 @@
+{
+  "name": "word-highlighter",
+  "displayName": "word-highlighter",
+  "description": "サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示します。",
+  "version": "1.0.0",
+  "publisher": "7QgvhP",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/7QgvhP/word-highlighter.git"
+  },
+  "engines": {
+    "vscode": "^1.141.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "wordHighlighter",
+          "title": "word-highlighter",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "wordHighlighter": [
+        {
+          "type": "webview",
+          "id": "wordHighlighter.wordsView",
+          "name": "登録単語"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "wordHighlighter.addSelection",
+        "title": "選択テキストを登録",
+        "category": "word-highlighter"
+      },
+      {
+        "command": "wordHighlighter.toggleGlobal",
+        "title": "全体のオン/オフ切り替え",
+        "category": "word-highlighter"
+      },
+      {
+        "command": "wordHighlighter.turnOff",
+        "title": "全体をオフにする（現在オン）",
+        "category": "word-highlighter",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "wordHighlighter.turnOn",
+        "title": "全体をオンにする（現在オフ）",
+        "category": "word-highlighter",
+        "icon": "$(eye-closed)"
+      },
+      {
+        "command": "wordHighlighter.deleteAll",
+        "title": "すべての単語を削除",
+        "category": "word-highlighter"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "wordHighlighter.addSelection",
+          "group": "navigation@100"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "wordHighlighter.turnOff",
+          "when": "view == wordHighlighter.wordsView && wordHighlighter.globalEnabled",
+          "group": "navigation"
+        },
+        {
+          "command": "wordHighlighter.turnOn",
+          "when": "view == wordHighlighter.wordsView && !wordHighlighter.globalEnabled",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wordHighlighter.turnOff",
+          "when": "false"
+        },
+        {
+          "command": "wordHighlighter.turnOn",
+          "when": "false"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --target=node20",
+    "watch": "npm run compile -- --watch",
+    "lint": "eslint src test media",
+    "typecheck": "tsc --noEmit",
+    "build-test": "esbuild test/*.test.ts --bundle --outdir=dist-test --out-extension:.js=.cjs --format=cjs --platform=node --target=node20",
+    "test": "npm run lint && npm run typecheck && npm run build-test && node --test \"dist-test/**/*.cjs\"",
+    "package": "vsce package --skip-license"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "@types/vscode": "1.140.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.12.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.2"
+  }
+}

@@ -1,0 +1,471 @@
+/*
+ * サイドバー（登録単語）の見た目。VS Code のテーマ用 CSS 変数に追従する。
+ *
+ * c-function-analyzer の解析結果画面と統一感が出るよう、同じ方針でそろえる。
+ * - 配色は彩度を抑え、文字は 11〜12px、枠は細い線と小さい角丸（3px）
+ * - 一覧は、細い枠線のセクションにまとめる（分類の色分けはないため、左のアクセント線は付けない）
+ * - ボタンは控えめな色で、マウスを乗せたときに文字色が濃くなる
+ */
+:root {
+  --border-color: var(--vscode-panel-border, #3c3c3c);
+  --text-muted: var(--vscode-descriptionForeground, #9d9d9d);
+  --font-mono: var(--vscode-editor-font-family, Consolas, monospace);
+  --surface: rgba(127, 127, 127, 0.06);
+  --hover-bg: var(--vscode-toolbar-hoverBackground, rgba(90, 93, 94, 0.31));
+}
+
+body {
+  margin: 0;
+  padding: 8px 12px 12px;
+  font-family: var(--vscode-font-family, "Segoe UI", sans-serif);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* ---- お知らせ（全体オフ・データ破損） ---- */
+.banner {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--vscode-inputValidation-warningBackground, #352a05);
+  border-left: 3px solid var(--vscode-editorWarning-foreground, #cca700);
+}
+
+.banner.error {
+  background: var(--vscode-inputValidation-errorBackground, #5a1d1d);
+  border-left-color: var(--vscode-editorError-foreground, #f14c4c);
+}
+
+/* ---- 入力欄 ---- */
+.add-row {
+  display: flex;
+  gap: 5px;
+}
+
+#new-word {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  padding: 0 7px;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre;
+  color: var(--vscode-input-foreground);
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, var(--border-color));
+  border-radius: 3px;
+}
+
+#new-word::placeholder {
+  font-family: var(--vscode-font-family, "Segoe UI", sans-serif);
+  color: var(--vscode-input-placeholderForeground, var(--text-muted));
+}
+
+#new-word:focus {
+  outline: none;
+  border-color: var(--vscode-focusBorder, #007fd4);
+}
+
+#new-word.invalid {
+  border-color: var(--vscode-inputValidation-errorBorder, #be1100);
+}
+
+.add-error {
+  font-size: 11px;
+  color: var(--vscode-errorForeground, #f48771);
+}
+
+.add-error:not(:empty) {
+  margin-top: 4px;
+}
+
+/* 文字のボタン（登録・すべて削除） */
+.text-button {
+  flex: none;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.text-button:hover {
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--hover-bg);
+}
+
+/* セクションの見出しに置く、枠なしの小さいボタン */
+.section-button {
+  padding: 1px 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.section-button:hover {
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--hover-bg);
+}
+
+.section-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+/* ---- 一覧のセクション ---- */
+.section-container {
+  margin-top: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 6px 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-count {
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--text-muted);
+  background: rgba(127, 127, 127, 0.12);
+  border-radius: 3px;
+}
+
+.word-list {
+  margin: 0;
+  padding: 3px 0;
+  list-style: none;
+}
+
+.no-data {
+  height: 26px;
+  padding: 0 10px;
+  line-height: 26px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- 一覧の1行 ---- */
+.word-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 26px;
+  padding: 0 4px 0 2px;
+}
+
+.word-row:hover {
+  background-color: var(--vscode-list-hoverBackground, #2a2d2e);
+}
+
+.word-row.disabled .word-cell,
+.word-row.disabled .color-button,
+.word-row.disabled .toggle {
+  opacity: 0.4;
+}
+
+.word-row.dragging {
+  opacity: 0.4;
+}
+
+/* ドロップ位置の線 */
+.word-row.drop-before {
+  box-shadow: inset 0 2px 0 var(--vscode-focusBorder, #007fd4);
+}
+
+.word-row.drop-after {
+  box-shadow: inset 0 -2px 0 var(--vscode-focusBorder, #007fd4);
+}
+
+/* 単語の欄（幅いっぱいに広がる）。背景色は中の .word-text にだけ付ける */
+.word-cell {
+  flex: 1;
+  min-width: 0;
+  margin: 0 4px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 単語の文字（エディタ上と同じく、文字の部分にだけ色を付ける） */
+.word-text {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+/* アイコンのボタン（並べ替え・目・削除・警告） */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.12s ease;
+}
+
+.icon-button:hover {
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--hover-bg);
+}
+
+.icon-button svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.drag-handle {
+  width: 14px;
+  cursor: grab;
+  opacity: 0.6;
+}
+
+.drag-handle:hover {
+  background: transparent;
+  opacity: 1;
+}
+
+/* 削除ボタンは、行にマウスを乗せたときだけ目立たせる */
+.delete-button {
+  opacity: 0.5;
+}
+
+.word-row:hover .delete-button {
+  opacity: 1;
+}
+
+.warning,
+.warning:hover {
+  color: var(--vscode-editorWarning-foreground, #cca700);
+  background: transparent;
+  cursor: help;
+}
+
+/* 単語一致・正規表現のトグル（VS Code の検索窓のトグルと同じ配色） */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--vscode-inputOption-hoverBackground, var(--hover-bg));
+}
+
+.toggle.checked {
+  color: var(--vscode-inputOption-activeForeground, #ffffff);
+  background: var(--vscode-inputOption-activeBackground, rgba(36, 137, 219, 0.51));
+  border-color: var(--vscode-inputOption-activeBorder, #007acc);
+}
+
+.toggle .whole-word {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* 色ボタン */
+.color-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.color-button:hover {
+  border-color: var(--vscode-focusBorder, #007fd4);
+}
+
+.color-button .swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* 色なしを表す斜線 */
+.no-color {
+  background-image: linear-gradient(to top right, transparent calc(50% - 0.5px), var(--text-muted) 50%, transparent calc(50% + 0.5px));
+}
+
+.icon-button:focus-visible,
+.toggle:focus-visible,
+.color-button:focus-visible,
+.text-button:focus-visible,
+.section-button:focus-visible,
+.palette-swatch:focus-visible,
+.palette-action:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder, #007fd4);
+  outline-offset: 1px;
+}
+
+/* ---- パレット ---- */
+.palette {
+  position: fixed;
+  z-index: 10;
+  width: max-content;
+  padding: 8px;
+  font-size: 11px;
+  color: var(--vscode-editorWidget-foreground, var(--vscode-foreground, #cccccc));
+  background: var(--vscode-editorWidget-background, #252526);
+  border: 1px solid var(--vscode-editorWidget-border, var(--border-color));
+  border-radius: 3px;
+  box-shadow: 0 2px 6px var(--vscode-widget-shadow, rgba(0, 0, 0, 0.36));
+}
+
+.palette-title {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 18px);
+  gap: 4px;
+}
+
+.palette-swatch {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.palette-swatch:hover {
+  border-color: var(--vscode-foreground, #cccccc);
+}
+
+.palette-swatch.selected {
+  outline: 1px solid var(--vscode-focusBorder, #007fd4);
+  outline-offset: 1px;
+}
+
+.palette-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.palette-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.palette-action:hover {
+  color: var(--vscode-foreground, #cccccc);
+  background: var(--hover-bg);
+}
+
+.palette-action.selected {
+  border-color: var(--vscode-focusBorder, #007fd4);
+}
+
+.palette-action .swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+}
+
+/* カスタム色の input は、ラベル（.palette-action）のクリックで開く */
+.palette-action input[type="color"] {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}

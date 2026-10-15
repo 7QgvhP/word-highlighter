@@ -1,0 +1,36 @@
+単語一致の確認用ファイル（拡張機能の結果と、VS Code の検索窓（単語一致ON・大文字小文字の区別ON）の結果を比べる）
+
+[foo]
+foo
+foo_bar
+foobar
+barfoo
+foo-bar
+foo.bar
+bar.foo
+(foo)
+Foo FOO
+
+[.foo / foo.]
+x.foo
+x.foobar
+a .foo b
+foo.bar
+xfoo.bar
+
+[日本]
+日本
+日本語
+東日本
+これは 日本 です
+(日本)
+日本,日本.
+日本、
+。日本
+　日本　
+
+[正規表現 fo+（単語一致ON）]
+fo foo foobar xfoo foo-1
+
+[正規表現 foo\-bar]
+foo-bar
