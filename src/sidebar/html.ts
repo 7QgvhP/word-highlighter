@@ -42,7 +42,7 @@ export function buildHtml(p: HtmlParams): string {
 <meta http-equiv="Content-Security-Policy" content="${escapeAttr(csp)}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="${escapeAttr(p.styleUri)}">
-<title>登録単語</title>
+<title>単語ハイライト</title>
 </head>
 <body>
 <div id="banners"></div>

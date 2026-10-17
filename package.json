@@ -2,7 +2,7 @@
   "name": "word-highlighter",
   "displayName": "word-highlighter",
   "description": "サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示します。",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "7QgvhP",
   "license": "UNLICENSED",
   "repository": {
@@ -29,7 +29,7 @@
       "activitybar": [
         {
           "id": "wordHighlighter",
-          "title": "word-highlighter",
+          "title": "単語ハイライト",
           "icon": "media/icon.svg"
         }
       ]
@@ -39,7 +39,7 @@
         {
           "type": "webview",
           "id": "wordHighlighter.wordsView",
-          "name": "登録単語"
+          "name": "単語ハイライト"
         }
       ]
     },

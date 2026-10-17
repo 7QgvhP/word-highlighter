@@ -18,7 +18,7 @@
 - `src/colors.ts`: パレットと背景色の透明度（`BG_ALPHA`）
 - `src/types.ts`: 状態と、Webview とのメッセージの型
 - `src/sidebar/`: Webview ビューのプロバイダ（`provider.ts`）と HTML（`html.ts`。CSP と nonce）
-- `media/`: Webview の画面（`sidebar.js`、`sidebar.css`）と、アクティビティバーのアイコン（`icon.svg`。仮のもので、差し替えられます）
+- `media/`: Webview の画面（`sidebar.js`、`sidebar.css`）と、アクティビティバーのアイコン（`icon.svg`。蛍光ペンの形）
 - `test/`: `node:test` によるテスト（esbuild で `dist-test/` にまとめて実行）
 - `samples/word-match.txt`: 単語一致を、VS Code の検索窓と見比べるためのファイル（vsix には含めません）
 - `docs/`: 仕様書
@@ -47,7 +47,7 @@ npm run package   # vsix の作成（vsce package --skip-license）
 ## 注意事項
 - **GitHub Releases を作るリポジトリです。** `v` で始まるタグを push すると、`.github/workflows/release.yml` が、タグと `package.json` のバージョンの一致確認、テストの実行、vsix の作成、Releases への添付を行います。バージョンが一致しないと、リリースは失敗します。
 - 拡張機能ID（`7QgvhP.word-highlighter`）を変えると、保存データが消えます。`publisher` と `name` は変更しないでください。
-- 表示名（`displayName`）は、他の拡張機能にそろえて英語の `word-highlighter` にしています（アクティビティバーの名前、コマンドの分類、通知の接頭辞も同じ）。画面の文言は日本語です。
+- 表示名（`displayName`）は、他の拡張機能にそろえて英語の `word-highlighter` にしています（コマンドの分類、通知の接頭辞も同じ）。サイドバーの見出しは、ビューコンテナの `title` とビューの `name` を同じ「単語ハイライト」にして、「単語ハイライト」とだけ表示しています。画面の文言は日本語です。
 - 仕様書（`docs/SPEC.md`）は、実装に合わせて書いています。挙動を変えたときは、仕様書も同じコミットで更新してください。
 - `engines.vscode` より新しい `@types/vscode` を使うと、vsce がエラーにします。`@types/vscode` は版を固定しています。
 - `.vscodeignore` で、`CLAUDE.md`、`docs/**`、`.github/**`、`src/**`、`test/**`、`samples/**` などの配布物に不要なファイルを除外しています。
