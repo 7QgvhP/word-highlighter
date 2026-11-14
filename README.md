@@ -1,32 +1,43 @@
 # word-highlighter
 
-サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示する VS Code 拡張機能です。
-自分用で、Marketplace には公開していません。
+サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示する VS Code 拡張機能。
 
-## インストール
+## 概要
 
-[GitHub Releases](https://github.com/7QgvhP/word-highlighter/releases) から vsix をダウンロードし、次のコマンドでインストールします（VS Code の拡張機能ビューの「…」→「VSIX からのインストール」でも可）。
+コードや文章の中で注目したい単語を、エディタ上で色付きで目立たせる。
+単語はサイドバーで管理し、単語ごとに色・単語一致・正規表現を設定できる。
+自分用で、Marketplace には公開せず、GitHub Releases の vsix を直接インストールして使う。
+
+## 主な機能
+
+- サイドバーの入力欄、またはエディタの右クリックメニューから単語を登録する
+- 単語ごとに、有効/無効、単語一致（VS Code の検索と同じ判定）、正規表現、文字色、背景色を設定する
+- 一覧の並び順で優先度を決め、重なった部分には上の単語の色だけを使う
+- すべてのハイライトを、まとめてオン/オフする
+
+## クイックスタート
+
+前提：VS Code 1.141 以上。
+
+[GitHub Releases](https://github.com/7QgvhP/word-highlighter/releases) から vsix をダウンロードしてインストールし、アクティビティバーの「単語ハイライト」から単語を登録する。
 
 ```bash
 code --install-extension word-highlighter-X.Y.Z.vsix
 ```
 
-## 使い方
+詳しくは [docs/usage.md](docs/usage.md) を参照。
 
-- アクティビティバーの「単語ハイライト」（蛍光ペンのアイコン）を開き、入力欄に単語を入力して、Enter（または「登録」）で登録します。
-- エディタの右クリックメニューの「選択テキストを登録」でも登録できます（選択がないときは、カーソル位置の単語）。
-- 一覧の各行で、有効/無効（目のアイコン）、単語一致、正規表現、文字色、背景色の変更と、削除ができます。
-- 行の左端のハンドルをドラッグして並べ替えます。上にある単語ほど優先され、重なった部分には上の単語の色だけが使われます。
-- ビューのタイトルバーのボタン（またはコマンド「全体のオン/オフ切り替え」）で、すべてのハイライトをまとめてオン/オフできます。
-- 大文字小文字は常に区別します。単語一致は、VS Code の検索の単語一致（`editor.wordSeparators`）と同じ判定です。
+## ドキュメント
 
-## 開発
+| ファイル | 内容 |
+|---|---|
+| [docs/spec.md](docs/spec.md) | 仕様（何をするか） |
+| [docs/usage.md](docs/usage.md) | 使用方法 |
+| [docs/architecture.md](docs/architecture.md) | 設計（どう作っているか） |
+| [docs/development.md](docs/development.md) | 開発者向けガイド（ビルド、テスト、リリース） |
+| [docs/adr/](docs/adr/README.md) | 設計判断記録（ADR） |
+| [CHANGELOG.md](CHANGELOG.md) | 変更履歴 |
 
-```bash
-npm install       # 依存関係の取得（初回）
-npm test          # lint + 型チェック + テスト（node:test）
-npm run compile   # ビルド（dist/ へ出力）
-npm run package   # vsix の作成
-```
+## ライセンス
 
-仕様は [docs/SPEC.md](docs/SPEC.md)、変更履歴は [CHANGELOG.md](CHANGELOG.md) を参照してください。
+`UNLICENSED`（`package.json`）。LICENSE ファイルは置いていない。

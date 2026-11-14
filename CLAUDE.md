@@ -1,54 +1,55 @@
 # word-highlighter
 
-共通ルール（コミットの書式、バージョン、タグ、CHANGELOG）は、ここには書きません。このファイルは、このリポジトリ固有の事実だけを書きます。
+コミットの書式、バージョン、タグ、CHANGELOG の規約（全プロジェクト共通）は、ここには書かない。このファイルは、このリポジトリ固有の事実だけを書く。
 
 ## 概要
-サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示する VS Code 拡張機能です。自分用で、vsix を直接インストールして使います（Marketplace には公開しません）。仕様書は `docs/SPEC.md` です。
+サイドバーに登録した単語を、エディタ上で文字色・背景色つきで強調表示する VS Code 拡張機能。自分用で、vsix を直接インストールして使う（Marketplace には公開しない）。
 
-## 現在の状態
-- 初版 v1.0.0 を、`main` への最初のコミットとしてリリースしました（タグ `v1.0.0`、GitHub Releases に vsix を添付）。
-- `main` の保護設定（force push と削除の禁止）は、dev-hub 側で行います。
+## 技術スタックと主要ディレクトリ
+- TypeScript / VS Code 拡張機能。実行時の依存ライブラリはない。バンドルは esbuild、型チェックは `tsc --noEmit`、lint は ESLint。
+- `src/`: 本体（`extension.ts`、`store.ts`、`matcher.ts`、`decorator.ts`、`colors.ts`、`types.ts`、`sidebar/`）
+- `media/`: Webview の画面とアイコン
+- `test/`: `node:test` によるテスト
+- `samples/word-match.txt`: 単語一致の確認用の入力
+- 詳細は [docs/architecture.md](docs/architecture.md)。出力先の `dist/`、`dist-test/`、`*.vsix` は Git 管理外。
 
-## 構成と技術
-- TypeScript / VS Code 拡張機能。実行時の依存ライブラリはありません。ビルドは esbuild で `dist/extension.js` に1ファイルにまとめ、型チェックは `tsc --noEmit`、lint は ESLint（`eslint.config.mjs`）で行います。
-- `src/extension.ts`: 起動、コマンドの登録、各部品の接続
-- `src/store.ts`: `globalState` への保存・読み込み・検証・移行と、状態を変える操作（vscode に依存しない）
-- `src/matcher.ts`: マッチ判定、単語境界（VS Code の `isValidMatch` 相当）、重なりの分割、検索範囲（vscode に依存しない）
-- `src/decorator.ts`: 装飾の適用、(文字色, 背景色) ごとの共有と破棄、再描画の待ち時間
-- `src/colors.ts`: パレットと背景色の透明度（`BG_ALPHA`）
-- `src/types.ts`: 状態と、Webview とのメッセージの型
-- `src/sidebar/`: Webview ビューのプロバイダ（`provider.ts`）と HTML（`html.ts`。CSP と nonce）
-- `media/`: Webview の画面（`sidebar.js`、`sidebar.css`）と、アクティビティバーのアイコン（`icon.svg`。蛍光ペンの形）
-- `test/`: `node:test` によるテスト（esbuild で `dist-test/` にまとめて実行）
-- `samples/word-match.txt`: 単語一致を、VS Code の検索窓と見比べるためのファイル（vsix には含めません）
-- `docs/`: 仕様書
-- 出力先の `dist/`、`dist-test/`、`*.vsix` は Git 管理外
-
-## ビルド・テストの手順
+## コマンド
 ```bash
 npm install       # 依存関係の取得（初回）
 npm test          # lint + 型チェック + テストのビルド + node:test
+npm run lint      # lint のみ
 npm run compile   # ビルド（dist/ へ出力）
-npm run package   # vsix の作成（vsce package --skip-license）
+npm run package   # vsix の作成
 ```
-- テストは VS Code を起動せずに実行できます。vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、実機で確認します。
-- テスト名の末尾の `(vX.Y.Z)` は、その挙動が確定したバージョンを表します。
-- 単語一致の期待値は、VS Code の検索窓（単語一致ON）と同じ入力で比べて決めます。
-- ※ 自動対応でコマンドを実行するには、dev-hub の `tools\claude-auto\config.ps1` の `$ExtraTools` で許可が必要です。
+- テストは VS Code を起動せずに実行できる。vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、実機で確認する。
+- ※ 自動対応でコマンドを実行するには、dev-hub の `tools\claude-auto\config.ps1` の `$ExtraTools` で許可が必要。
+
+## コーディング規約
+- コメントは日本語。UI の文言・メッセージも日本語。
+- vscode に依存しない処理は `store.ts`、`matcher.ts`、`sidebar/html.ts` に置き、テストできるようにする。
+- テスト名の末尾の `(vX.Y.Z)` は、その挙動が確定したバージョンを表す。
+- 単語一致の期待値は、VS Code の検索窓（単語一致 ON）と同じ入力で比べて決める。
+- `CHANGELOG.md` の箇条書きは `*` で、文体は「です・ます」。
 
 ## バージョンの記録場所
-リリースのときに、次をすべて同じコミットで更新します。
+リリースのときに、次をすべて同じコミットで更新する。
 - `package.json` の `version`
 - `package-lock.json` の `version`（先頭と `packages[""]` の2か所）
 - `CHANGELOG.md` の見出し（`## [X.Y.Z] - YYYY-MM-DD`）
 
-`README.md` には、現在のバージョンを書いていません（インストール手順の `X.Y.Z` は例示です）。
+`README.md` には、現在のバージョンを書いていない（インストール手順の `X.Y.Z` は例示）。
+**GitHub Releases を作るリポジトリ。** 手順は [docs/development.md](docs/development.md#リリース手順)。
+
+## ドキュメント更新ルール
+今後の開発で、次の変更を行う際は、同じ作業の中で該当ドキュメントも更新すること。
+- 機能の追加・変更・削除 → `docs/spec.md`、`docs/usage.md`、`CHANGELOG.md`
+- 構成や設計の変更 → `docs/architecture.md`
+- 設定項目の追加・変更 → `docs/configuration.md`
+- 技術選定や設計方針を変える判断 → 新しい ADR を `docs/adr/` に追加する（既存の ADR は書き換えず、ステータスを Superseded にして、新しい ADR から参照する）
+- バージョンを上げるとき → `CHANGELOG.md` に新しいバージョンの節（`## [X.Y.Z] - YYYY-MM-DD`）を追加し、「バージョンの記録場所」のファイルをすべて同じコミットで更新する
 
 ## 注意事項
-- **GitHub Releases を作るリポジトリです。** `v` で始まるタグを push すると、`.github/workflows/release.yml` が、タグと `package.json` のバージョンの一致確認、テストの実行、vsix の作成、Releases への添付を行います。バージョンが一致しないと、リリースは失敗します。
-- 拡張機能ID（`7QgvhP.word-highlighter`）を変えると、保存データが消えます。`publisher` と `name` は変更しないでください。
-- 表示名（`displayName`）は、他の拡張機能にそろえて英語の `word-highlighter` にしています（コマンドの分類、通知の接頭辞も同じ）。サイドバーの見出しは、ビューコンテナの `title` とビューの `name` を同じ「単語ハイライト」にして、「単語ハイライト」とだけ表示しています。画面の文言は日本語です。
-- 仕様書（`docs/SPEC.md`）は、実装に合わせて書いています。挙動を変えたときは、仕様書も同じコミットで更新してください。
-- `engines.vscode` より新しい `@types/vscode` を使うと、vsce がエラーにします。`@types/vscode` は版を固定しています。
-- `.vscodeignore` で、`CLAUDE.md`、`docs/**`、`.github/**`、`src/**`、`test/**`、`samples/**` などの配布物に不要なファイルを除外しています。
-- `CHANGELOG.md` の箇条書きは `*` で、文体は「です・ます」です。
+- 拡張機能 ID（`7QgvhP.word-highlighter`）を変えると、保存データが消える。`publisher` と `name` は変更しない。
+- 表示名（`displayName`）、コマンドの分類、通知の接頭辞は `word-highlighter`。サイドバーの見出しは、ビューコンテナの `title` とビューの `name` を同じ「単語ハイライト」にしている。
+- `@types/vscode` は、`engines.vscode` より新しくならないよう版を固定している（vsce がエラーにするため）。
+- `.vscodeignore` で、`CLAUDE.md`、`docs/**`、`.github/**`、`src/**`、`test/**`、`samples/**` などの配布物に不要なファイルを除外している。
