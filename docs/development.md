@@ -2,7 +2,7 @@
 
 ## 開発環境の構築
 
-- Node.js と npm。GitHub Actions では Node 24 を使っている。TODO(要確認): 手元で必要な Node.js の最小バージョンは記録がない（esbuild の出力対象は `node20`）。
+- Node.js と npm。GitHub Actions では Node 24 を使っている。
 - 依存関係を取得する。
 
 ```bash
@@ -25,7 +25,7 @@ npm run package   # vsix を作る（vsce package --skip-license。LICENSE フ�
 npm test
 ```
 
-lint、型チェック（`tsc --noEmit`）、テストのビルド（esbuild で `dist-test/` に出力）、`node --test` を順に実行する。2026-11-15 の確認時は 56 件すべて成功した。
+lint、型チェック（`tsc --noEmit`）、テストのビルド（esbuild で `dist-test/` に出力）、`node --test` を順に実行する。
 
 - テストは `node:test` で書き、VS Code を起動せずに実行する（[ADR 0006](adr/0006-headless-tests-with-node-test.md)）。対象は vscode に依存しない `matcher.ts`、`store.ts`、`sidebar/html.ts`。
   - マッチ判定: 通常・正規表現・単語一致・日本語・空マッチのスキップ・重なりの分割・正規表現のフラグ・検索範囲
@@ -37,7 +37,7 @@ lint、型チェック（`tsc --noEmit`）、テストのビルド（esbuild で
   - 区切り文字で始まる・終わる単語（`.foo`、`foo.`）
   - 日本語（`日本` と `日本語`、前後が空白や句読点の場合）
   - 正規表現と単語一致が両方 ON の場合
-- vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、実機で確認する。
+- vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、VS Code 上で動かして確認する。
 
 ## lint / フォーマット
 

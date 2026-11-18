@@ -1,6 +1,6 @@
 # 仕様
 
-旧仕様書（`docs/SPEC.md`）の内容を、仕様（本書）・設計（[architecture.md](architecture.md)）・開発（[development.md](development.md)）に分けて移したもの。
+拡張機能が何をするかを定める。どう作っているかは [architecture.md](architecture.md) を参照。
 
 ## 目的とスコープ
 
@@ -123,7 +123,7 @@ type State = {
 ## 制約条件
 
 - 正規表現の暴走（極端に遅いパターン）への自動対策はない。負荷は検索範囲の限定で抑える。
-- 単語一致の細かい挙動は VS Code のバージョンで変わりうるため、実機の検索窓（単語一致 ON）と比べて確認する（[development.md](development.md#テスト)）。
+- 単語一致の細かい挙動は VS Code のバージョンで変わりうるため、VS Code の検索窓（単語一致 ON）と比べて確認する（[development.md](development.md#テスト)）。
 
 ## エラー時の挙動
 

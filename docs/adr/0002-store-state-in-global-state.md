@@ -1,6 +1,6 @@
 # 0002. 状態を `globalState` に保存する
 
-- ステータス: Accepted（推定：コードから逆算）
+- ステータス: Accepted
 - 日付: 2026-10-16（初版のリリース日）
 
 ## 背景（Context）
@@ -15,6 +15,5 @@
 
 ## 理由と検討した代替案（Consequences / Alternatives）
 
-- 理由：TODO(要確認)（全プロジェクト共通にした理由、`settings.json` を使わない理由の記録はない）。
-- 結果として、拡張機能 ID（`7QgvhP.word-highlighter`）を変えると、保存データが消える。
-- 検討した代替案: `workspaceState`（ワークスペースごと）、`settings.json` への保存。採用しなかった理由は TODO(要確認)。
+- 拡張機能 ID（`7QgvhP.word-highlighter`）を変えると、保存データが消える。
+- 検討した代替案: `workspaceState`（ワークスペースごと）、`settings.json` への保存。

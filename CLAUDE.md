@@ -21,7 +21,7 @@ npm run lint      # lint のみ
 npm run compile   # ビルド（dist/ へ出力）
 npm run package   # vsix の作成
 ```
-- テストは VS Code を起動せずに実行できる。vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、実機で確認する。
+- テストは VS Code を起動せずに実行できる。vscode に依存する部分（`decorator.ts`、`extension.ts`、`sidebar/provider.ts`、`media/`）は、VS Code 上で動かして確認する。
 - ※ 自動対応でコマンドを実行するには、dev-hub の `tools\claude-auto\config.ps1` の `$ExtraTools` で許可が必要。
 
 ## コーディング規約
